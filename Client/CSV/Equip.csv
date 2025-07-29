@@ -1,0 +1,9 @@
+Id,Name,Type,IconPath,Description,ModelPath,MaterialPath
+int,string,enum<EquipPart>,string,string,string,string
+���,����,����,ͼ��·��,����,Ԥ��·��,����·��
+10000,ľͷ��,Head,Icons/Items/iron_ingot,����ͷ������װ�����ṩ����������,,
+10001,ʯͷ��,Head,Icons/Items/leather,����ͷ������װ������������ǿ,,
+20000,ľ�ؼ�,Body,Icons/Items/cloth,�����������װ�����ṩ��������,,
+20001,ʯ�ؼ�,Body,Icons/Items/zombie_heart,�����������װ������������������,,
+30000,��ǹ,Hand,Icons/Items/cloth,�Զ������������ٵ;���,Prefabs/Equips/pbsc_equip_shotgun,
+30001,uzi,Hand,Icons/Items/zombie_heart,���ǹ�����ټ����ʺϽ�ս,Prefabs/Equips/pbsc_equip_uzi,
