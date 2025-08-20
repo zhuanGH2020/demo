@@ -28,11 +28,31 @@ alwaysApply: true
 - **接口名**: 以I开头，如 `IDamageable`, `IInteractable`
 - **文件名**: 与类名一致，如 `PlayerController.cs`
 - **命名空间**: PascalCase，项目层级结构，如 `GameProject.Core.Manager`
-- **所有公共方法和类**: 必须有文档注释，如果注释内容只有一行就用（//），多行内容使用XML文档注释（/// <summary>）
+
+### 文档注释规范
+
+#### 注释格式
+- **单行注释**: 使用 `//` 进行简短说明
+- **多行注释**: 使用 XML文档注释 `/// <summary>` 进行详细描述
+- **简单summary注释**: 对于只有一行内容的`/// <summary>`注释，改为使用单行`//`注释
+
+#### 必须注释
+1. **公共类**：说明职责和使用约束
+2. **复杂方法**：包含业务逻辑或特殊要求
+3. **配置约束**：参数限制、文件路径要求等
+4. **状态机枚举**：说明状态含义
+
+#### 可省略注释
+1. **简单方法**：如 `GetPlayer()`, `SetHealth(int value)`
+2. **属性访问器**：如 `public int Health { get; set; }`
+3. **工具方法**：如 `IsNull()`, `ToString()`
 
 ### MonoBehaviour规范
 - 每个MonoBehaviour只负责一个明确的功能
 - 使用 `[SerializeField]` 而不是 `public` 暴露字段
+- 只有明确需要在Inspector中配置的字段才使用 `[SerializeField]`
+- 不应自动为所有私有字段生成 `[SerializeField]` 特性
+- 代码生成时需要明确字段用途，避免不必要的Inspector暴露
 - 使用 `[Header]`, `[Tooltip]` 等特性改善Inspector体验
 - 使用 `[Range]` 属性限制数值范围
 - 重写 `Awake()`, `Start()`, `Update()` 时调用基类方法
@@ -55,20 +75,28 @@ alwaysApply: true
 - 优化渲染：合理使用光照贴图和动态光照
 - 资源加载：根据需要实现分块加载和异步加载
 
+### 日志规范
+- **只使用错误日志**：仅在发生错误、异常或关键问题时使用 `Debug.LogError()` 或 `Debug.LogException()`
+- **禁用普通日志**：不使用 `Debug.Log()` 或 `Debug.LogWarning()` 进行常规信息输出
+- **避免生成基础日志**：简单的基本操作（如初始化成功、清理完成等）不需要生成日志代码
+- **性能考虑**：避免在生产环境中产生不必要的日志开销
+
+### 桌面端开发规范
+**本项目仅针对桌面端（PC）平台，无需考虑移动端处理**
+
+#### 输入处理规范
+- 只使用键盘和鼠标输入，无需考虑触屏操作
+
 ### 配置表规范
 - 表名和字段名命名规范: PascalCase，如`Item`，尽可能简短，但不要出现简写
-- 使用`ConfigManager``ConfigReader`查询配置表
-- 原始CSV表格采用GB2312编码，目录
-- 转码工具 `Tools\csv_converter.bat`，需在`Tools`目录运行
-	- 源目录：`CSV`，GB2312编码
-	- 目标目录：`Resources\Configs\`，UTF8编码
+- 使用`ConfigManager``ConfigReader`查询位于`Assets\Resources\Configs\`的配置表
 
 ## 2. 项目架构
 
 ### 核心系统设计
 
 #### 资源管理系统
-- **ResourceManager**: 资源加载管理，支持同步/异步加载、引用计数和自动卸载。详细文档：参考 `ResourceFramework_TechnicalDocument.md`
+- **ResourceManager**: 基于Unity Resources系统的轻量级资源管理工具，提供资源加载、缓存和自动回收功能。详细文档：参考 `ResourceFramework_TechnicalDocument.md`
 
 #### 对象池系统
 - **ObjectPoolManager & ObjectPool**: 对象池管理，支持多类型对象复用、状态管理和超时清理。详细文档：参考 `PoolFramework_TechnicalDocument.md`
@@ -82,6 +110,9 @@ alwaysApply: true
 
 ## 3. 协作规范
 
+### 核心系统设计规范
+- 一句话介绍，然后指向对应的技术文档
+
 ### 技术文档生成规范
 - **当用户提问"生成某某的技术文档"时，必须严格基于本.cursorrules文件中已有的规则和规范**
 - 技术文档内容必须遵循项目的架构设计、代码风格、命名约定等所有既定规范
@@ -90,7 +121,6 @@ alwaysApply: true
 - 保持与项目整体技术栈和开发模式的一致性
 - **生成技术文档时要求精简，只实现核心模块，避免过度设计和复杂架构，专注于用户需求的核心功能**
 - **设计文档中必须明确标注哪些脚本需要挂载到GameObject上使用，区分MonoBehaviour组件和纯数据类/工具类的使用方式**
-- **核心系统设计规范**：在.cursorrules文件中，核心系统设计部分只做一句话总结，然后指向对应的技术文档
 - **文档结构要求**：
   - 简介：用一句话简单介绍系统功能
   - 详细接口：列出所有对外接口和方法
