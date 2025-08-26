@@ -5,25 +5,22 @@ using UnityEngine;
 /// </summary>
 public abstract class HandEquipBase : EquipBase
 {
+    [Header("轨迹设置")]
+    [SerializeField] protected Material _trailMaterial; // 轨迹材质（可选）
+    
     protected GameObject _modelPrefab;
     protected Transform _model;  // 装备模型
-
-    protected override void Awake()
-    {
-        base.Awake();
-        _equipPart = EquipPart.Hand;  // 设置装备部位
-    }
 
     protected override void ApplyEquipEffect()
     {
         base.ApplyEquipEffect();
 
         // 获取装备配置
-        var equipConfig = EquipManager.Instance.GetEquip(_configId);
-        if (equipConfig == null) return;
+        var equipReader = ConfigManager.Instance.GetReader("Equip");
+        if (equipReader == null || !equipReader.HasKey(_configId)) return;
 
         // 获取模型预制体路径
-        string modelPath = equipConfig.Csv.GetValue<string>(_configId, "ModelPath");
+        string modelPath = equipReader.GetValue<string>(_configId, "ModelPath", "");
         if (string.IsNullOrEmpty(modelPath)) return;
         
         // 加载并实例化模型
@@ -74,6 +71,17 @@ public abstract class HandEquipBase : EquipBase
     /// </summary>
     protected virtual Vector3 GetAttackDirection()
     {
+        // 优先使用CombatEntity的朝向，确保攻击方向跟随角色朝向
+        if (_owner != null)
+        {
+            var combatEntity = _owner as CombatEntity;
+            if (combatEntity != null)
+            {
+                return combatEntity.transform.forward;
+            }
+        }
+        
+        // 备用方案：使用武器模型朝向
         return _model != null ? _model.forward : transform.forward;
     }
 
@@ -83,24 +91,5 @@ public abstract class HandEquipBase : EquipBase
     protected virtual void PlayAttackEffect()
     {
         // 由子类实现具体特效
-    }
-
-    /// <summary>
-    /// 处理攻击命中
-    /// </summary>
-    protected virtual void HandleHit(IDamageable target, Vector3 hitPoint)
-    {
-        if (target == null) return;
-
-        var damageInfo = new DamageInfo
-        {
-            Damage = GetAttackBonus(),
-            Type = DamageType.Physical,
-            HitPoint = hitPoint,
-            Direction = GetAttackDirection(),
-            Source = _owner
-        };
-
-        target.TakeDamage(damageInfo);
     }
 } 

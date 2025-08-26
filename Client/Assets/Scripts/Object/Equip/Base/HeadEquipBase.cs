@@ -7,22 +7,16 @@ public abstract class HeadEquipBase : EquipBase
 {
     protected Material _originalMaterial;  // 原始材质
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _equipPart = EquipPart.Head;  // 设置装备部位
-    }
-
     protected override void ApplyEquipEffect()
     {
         base.ApplyEquipEffect();
 
         // 获取装备配置
-        var equipConfig = EquipManager.Instance.GetEquip(_configId);
-        if (equipConfig == null) return;
+        var equipReader = ConfigManager.Instance.GetReader("Equip");
+        if (equipReader == null || !equipReader.HasKey(_configId)) return;
 
         // 获取材质路径
-        string materialPath = equipConfig.Csv.GetValue<string>(_configId, "MaterialPath");
+        string materialPath = equipReader.GetValue<string>(_configId, "MaterialPath", "");
         if (string.IsNullOrEmpty(materialPath)) return;
         /*
         // 加载材质

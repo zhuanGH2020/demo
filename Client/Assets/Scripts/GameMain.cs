@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,8 @@ public class GameMain : MonoBehaviour
         ConfigExample.Example();
         ConfigExample.AdvancedExample();
         ConfigExample.ValidationExample();
+    
+        var shopModel = ShopModel.Instance;
     }
 
     // Update is called once per frame
