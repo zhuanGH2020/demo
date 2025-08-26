@@ -228,7 +228,6 @@ public class UIScriptGenerator
         }
         
         string startMethodStart = "void Start()";
-        string startMethodEnd = "    }";
         
         int startIndex = content.IndexOf(startMethodStart);
         if (startIndex == -1)

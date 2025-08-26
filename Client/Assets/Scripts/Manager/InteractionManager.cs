@@ -74,7 +74,7 @@ public class InteractionManager
     {
         if (target == null || !target.CanInteract) return;
 
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return;
 
         _currentTarget = target;
@@ -91,7 +91,7 @@ public class InteractionManager
 
     private Vector3 GetInteractionPosition(Vector3 targetPosition, IClickable target)
     {
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return targetPosition;
 
         Vector3 playerPos = player.transform.position;
@@ -103,7 +103,7 @@ public class InteractionManager
 
     private void MovePlayerToPosition(Vector3 position)
     {
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return;
 
         player.MoveToPosition(position);
@@ -116,7 +116,7 @@ public class InteractionManager
         if (Time.time - _lastInteractionCheck < InteractionCheckInterval) return;
         _lastInteractionCheck = Time.time;
 
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null)
         {
             CancelCurrentInteraction();
@@ -158,7 +158,7 @@ public class InteractionManager
     {
         if (_currentTarget == null) return;
 
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return;
 
         if (_currentTarget is Building building)
@@ -185,7 +185,7 @@ public class InteractionManager
 
     private void UpdateNearbyInteraction()
     {
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return;
 
         IClickable nearestTarget = null;

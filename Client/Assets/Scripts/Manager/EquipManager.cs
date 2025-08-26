@@ -45,7 +45,7 @@ public class EquipManager
         
         PackageModel.Instance.RemoveItem(itemId, 1);
         
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player != null)
         {
             bool equipSuccess = player.Equip(itemId);
@@ -75,7 +75,7 @@ public class EquipManager
         
         _equippedItems.Remove(equipPart);
         
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player != null)
         {
             var equipComponent = GetEquipComponentByPart(equipPart);
@@ -121,7 +121,7 @@ public class EquipManager
             return;
         }
         
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) 
         {
             return;
@@ -164,7 +164,7 @@ public class EquipManager
     
     public void SyncPlayerEquipmentState()
     {
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return;
         
         Debug.Log($"[EquipManager] Syncing Player equipment state, current managed items: {_equippedItems.Count}");
@@ -191,7 +191,7 @@ public class EquipManager
 
     private EquipBase GetEquipComponentByPart(EquipPart equipPart)
     {
-        var player = Player.Instance;
+        var player = PlayerMain.Instance;
         if (player == null) return null;
         
         var equipField = typeof(CombatEntity).GetField("_equips", 
@@ -215,7 +215,7 @@ public class EquipManager
             return null;
     }
     
-    private void RemoveEquipComponent(Player player, EquipBase equip)
+    private void RemoveEquipComponent(PlayerMain player, EquipBase equip)
     {
         if (equip == null) return;
         
